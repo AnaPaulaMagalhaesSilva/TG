@@ -6,6 +6,7 @@ end
 
 When(/^I access the webMCTest$/) do
 	visit 'http://177.104.60.16:8000/topic/'
+	puts page.current_url
 	page.save_screenshot('screenshot.png')
 end
 
