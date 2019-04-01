@@ -14,16 +14,66 @@ class Home
   		raise "Missing menu Inscrever! " if all('li')[1].text != 'Inscrever'
   	end
   end
+
+  def clickMenu(option)
+  	case option
+  	when 'Entrar'
+  		$poLogin.clickEntrar
+  	when 'Inscrever'
+  		$poRegister.clickRegister
+  	end
+  end
+
+  def checkPage(option)
+  	case option
+  	when 'login'
+  		$poLogin.checkFields #pendente
+  	when 'register'
+  		$poRegister.checkFields
+  	end	
+  end
 end
 
 class Login
 	include Capybara::DSL
 
-	def clickLogin
+	def clickEntrar
 		within(all('ul.sidebar-nav')[1]) do
 			login = page.find('a[href="/account/login/?next=/topic/"]')
 			login.click
 		end		
+	end
+
+	def checkFields
+		within('div.col-sm-10 ') do
+			raise unless find('label', text: 'Endereço de email:')
+			raise unless find('input#id_username')
+			raise unless find('label', text: 'Senha:')
+			raise unless find('input#id_password')
+			raise unless all('div')[2].find('input')
+		end		
+	end
+
+	def clickLogin
+		within('div.col-sm-10 ') do
+			all('div')[2].find('input').click
+		end	
+	end
+
+	def loginAdminUser
+		within('div.col-sm-10 ') do 
+			@user = 'fzampirolli@ufabc.edu.br'
+			password = 'ufabc1234'
+			find('input#id_username').send_keys @user
+			find('input#id_password').send_keys password
+		end
+	end
+
+	def checkIfIamlogged
+		user = @user.split('@')[0]
+		within(all('ul.sidebar-nav')[1]) do
+			raise unless find('li', text: 'Usuário: ' + user)	
+		end
 	end
 end
 
