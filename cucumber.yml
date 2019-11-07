@@ -1,0 +1,1 @@
+json: --format pretty --format json --out reports/RegressionTests_<%=Time.now.strftime("%c").tr(' ', '_')%>.json
