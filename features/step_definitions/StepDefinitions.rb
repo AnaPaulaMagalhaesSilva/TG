@@ -5,7 +5,8 @@ Given(/^the test configuration data has been intialized$/) do
 end
 
 When(/^I access the webMCTest$/) do
-	visit 'http://177.104.60.16:8000/topic/'
+	visit 'http://177.104.60.16:8000'
+	puts page.current_url
 	page.save_screenshot('screenshot.png')
 end
 
