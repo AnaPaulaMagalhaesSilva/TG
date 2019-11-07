@@ -9,6 +9,6 @@ addons:
       secure: e2fe66f19a36f6aff25030dc50c0c8116363d84c
 
 script:
-  - ./tg-sonar
+  - sonar-scanner
   # - bundle exec rubocop -o reports/rubocop
 
