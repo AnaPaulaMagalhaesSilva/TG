@@ -1,3 +1,5 @@
 screenshot*
 .DS_Store
+.scannerwork/
+.idea/
 .reports/*

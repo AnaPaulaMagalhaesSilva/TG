@@ -1,0 +1,14 @@
+language: ruby
+
+branches:
+  - master
+
+addons:
+  sonarcloud:
+    github_token:
+      secure: e2fe66f19a36f6aff25030dc50c0c8116363d84c
+
+script:
+  - ./tg-sonar
+  # - bundle exec rubocop -o reports/rubocop
+

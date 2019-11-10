@@ -1,20 +1,20 @@
 Feature: Home webMCTest
   
-@CheckTitle
+@CheckHeader
 Scenario: Checking page's title
-  Given the test configuration data has been intialized 
-  When I access the webMCTest
-  Then I check if every links are present
+	Given the test configuration data has been intialized 
+	When I access the webMCTest
+	Then I check if every menus are present
 
 @Login
 Scenario: Testing login on the site with an user previously created
-	Given the test configuration data has been intialized 
-	When I access the webMCTest
-		And I click on "Entrar" option
-	Then I should see the "login" page
-		And I fill the user and password with correct informations
-		And I click on login button
-	Then I verify if I am logged
+  Given the test configuration data has been intialized 
+When I access the webMCTest
+	And I click on "Entrar" option
+Then I should see the "login" page
+	And I fill the user and password with correct informations
+	And I click on login button
+Then I verify if I am logged
 
 @Register
 Scenario: Testing the new user's register  

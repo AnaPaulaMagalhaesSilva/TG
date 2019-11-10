@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+echo "Starting analysis by SonarQube..."
+sonar-scanner -X \
+    -Dsonar.host.url='http://localhost:9000/' \
+    -Dsonar.login=$SONAR_TOKEN \
+    -Dsonar.issuesReport.console.enable=true \
+    -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
+    -Dsonar.github.login=$GITHUB_LOGIN \
+    -Dsonar.github.oauth=$GITHUB_TOKEN

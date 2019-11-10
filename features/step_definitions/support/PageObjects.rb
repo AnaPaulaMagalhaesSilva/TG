@@ -1,35 +1,31 @@
 class Home
 	include Capybara::DSL
 
-  def checkMenus
-  	within(all('ul.sidebar-nav')[0]) do
-  		raise "Missing webMCTest option! " if all('li')[0].text != 'webMCTest'
-  		raise "Missing Institutos option! " if all('li')[1].text != 'Institutos'
-  		raise "Missing Cursos option! " if all('li')[2].text != 'Cursos'
-  		raise "Missing Disciplinas option! " if all('li')[3].text != 'Disciplinas'
-  	end
-
-  	within(all('ul.sidebar-nav')[1]) do
-  		raise "Missing menu Entrar! " if all('li')[0].text != 'Entrar'
-  		raise "Missing menu Inscrever! " if all('li')[1].text != 'Inscrever'
+	def checkHeader
+		within('#navbarSupportedContent') do
+  		raise "Missing Institutos option! " unless find('.nav-link', :text => 'Institutos') 
+  		raise "Missing Institutos option! " unless find('.nav-link', :text => 'Cursos') 
+  		raise "Missing Institutos option! " unless find('.nav-link', :text => 'Disciplinas')
+  		raise "Missing Institutos option! " unless find('.nav-link', :text => 'Entrar')
+  		raise "Missing Institutos option! " unless find('.nav-link', :text => 'Inscrever')
   	end
   end
-
-  def clickMenu(option)
+	
+	def clickMenu(option)
   	case option
-  	when 'Entrar'
-  		$poLogin.clickEntrar
-  	when 'Inscrever'
-  		$poRegister.clickRegister
+  		when 'Entrar'
+  			$poLogin.clickEntrar
+  		when 'Inscrever'
+  			$poRegister.clickRegister
   	end
   end
 
   def checkPage(option)
   	case option
-  	when 'login'
-  		$poLogin.checkFields #pendente
-  	when 'register'
-  		$poRegister.checkFields
+  		when 'login'
+  			$poLogin.checkFields 
+  		when 'register'
+  			$poRegister.checkFields
   	end	
   end
 end
@@ -38,19 +34,20 @@ class Login
 	include Capybara::DSL
 
 	def clickEntrar
-		within(all('ul.sidebar-nav')[1]) do
-			login = page.find('a[href="/account/login/?next=/topic/"]')
+		within('#navbarSupportedContent') do
+			login = find('.nav-link', :text => 'Entrar')
 			login.click
 		end		
 	end
 
 	def checkFields
-		within('div.col-sm-10 ') do
-			raise unless find('label', text: 'Endereço de email:')
-			raise unless find('input#id_username')
-			raise unless find('label', text: 'Senha:')
-			raise unless find('input#id_password')
-			raise unless all('div')[2].find('input')
+		within('div.card-body') do
+			raise "Missing mail's label! " unless find('.input-group-prepend', text: 'Endereço de email:')
+			raise "Missing mail's field! " unless find('input#id_username')
+			raise "Missing password's label! " unless find('label', text: 'Senha:')
+			raise "Missing password's field! " unless find('input#id_password')
+			raise "Missing login button!  " unless find('.btn.btn-primary', text: 'Entrar')
+			raise "Missing forgot password button! " unless find('.btn.btn-warning', text: 'Perdeu a senha?')
 		end		
 	end
 
@@ -60,12 +57,14 @@ class Login
 		end	
 	end
 
-	def loginAdminUser
-		within('div.col-sm-10 ') do 
-			@user = 'fzampirolli@ufabc.edu.br'
-			password = 'ufabc1234'
+	def loginCoordUser
+		userData = $poAuxiliar.readCredentials('coordenador')
+		within('div.card-body') do 
+			@user = userData['login']
+			password = userData['password']
 			find('input#id_username').send_keys @user
 			find('input#id_password').send_keys password
+			find('.btn.btn-primary').click
 		end
 	end
 
@@ -81,8 +80,8 @@ class Register
 	include Capybara::DSL
 
 	def clickRegister
-		within(all('ul.sidebar-nav')[1]) do
-			register = page.find('a[href="/topic/signup"]')
+		within('#navbarSupportedContent') do
+			register = find('.nav-link', text: 'Inscrever')
 			register.click
 			sleep 3
 		end
@@ -111,4 +110,35 @@ class Register
 		end
 	end
 
+	def fillMail
+		email = find('input#email')
+		email.send_keys generateNewMail		
+	end
+
+	def generateNewMail
+		tdaydate = DateTime.now.to_date.to_s
+		puts tdaydate
+		emailpadrao = 'ana.teste@gmail.com' 
+		newemail = emailpadrao.split('@')[0] + "+#{tdaydate}@" + emailpadrao.split('@')[1]
+		puts newemail
+		return newemail
+	end
+end
+
+class Auxiliar
+	def readCredentials(userType)
+		filepath = "./features/step_definitions/data/credentials.json"
+		file = File.read(filepath)
+		data_hash = JSON.parse(file)
+		case userType
+		when 'coordenador'
+			data_hash['coordenador']
+		when 'professor'
+			data_hash['professor']
+		when 'estudante'
+			data_hash['estudante']
+		when 'administrador'
+			data_hash['administrador']
+		end
+	end
 end
