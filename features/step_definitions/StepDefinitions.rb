@@ -39,9 +39,35 @@ And(/^I fill the email field$/) do
 	$poRegister.fillMail
 end
 
+And(/^I fill the first and last name$/) do
+	$poRegister.fillName
+end
 
+And(/^I fill the password and his confirmation "([^"]*)" requirements with "([^"]*)" keys$/) do |option, keys|
+	$poRegister.fillPass(option, keys)
+end
 
+And(/^I click on signup button$/) do
+	$poRegister.clickBtnRegister
+end
 
+Then(/^I see a message error that requires a longer password$/) do
+	$poRegister.verifyShortPassErrorMessage
+end
 
+Then(/^I see a message error that requires two same passwords$/) do
+	$poRegister.verifyDifferentsPassErrorMessage
+end
 
-#$poRegister.checkExceptions
+And(/^I fill the email field with a user already registered$/) do
+	$poRegister.fillUserAlreadyRegistered
+end
+
+Then(/^I see a message error that requires an email not registered$/) do
+	$poRegister.verifyUserAlreadyRegistered
+end
+
+And(/^I fill the email field with too many caracteres$/) do
+	$poRegister.fillUserLongEmail
+end
+
