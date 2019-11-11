@@ -3,6 +3,7 @@ Given(/^the test configuration data has been intialized$/) do
 	$poLogin = Login.new
 	$poRegister = Register.new
 	$poAuxiliar = Auxiliar.new
+	$poAcesso = ControleDeAcesso.new
 end
 
 When(/^I access the webMCTest$/) do
@@ -23,16 +24,24 @@ Then(/^I should see the "([^"]*)" page$/) do |option|
 	$poHome.checkPage(option)	
 end
 
-And(/^I fill the user and password with correct informations$/) do
-	$poLogin.loginCoordUser
+And(/^I fill the user and password with "([^"]*)" informations$/) do |option|
+	$poLogin.loginUser(option)
 end
 
 And(/^I click on login button$/) do
 	$poLogin.clickLogin
 end
 
+Then(/^I click on logout button$/) do
+	$poLogin.clickLogout
+end
+
 Then(/^I verify if I am logged$/) do
 	$poLogin.checkIfIamlogged	
+end
+
+And(/^I verify I am unloged$/) do
+	$poLogin.checkIfIamUnloged
 end
 
 And(/^I fill the email field$/) do
@@ -70,4 +79,62 @@ end
 And(/^I fill the email field with too many caracteres$/) do
 	$poRegister.fillUserLongEmail
 end
+
+Then(/^I fill the email field with a user that not contains ufabc domain$/) do
+	$poRegister.fillUserNotUfabcDomain
+end
+
+Then(/^I see a message error that requires a email with ufabc domain$/) do
+	$poRegister.verifyUserNotUfabcDomain
+end
+
+Then(/^I only should see in the right menu the Entrar and Inscrever options$/) do
+	$poAcesso.verifyAvailableOptionsForUnloggedUsers
+end
+
+Then(/^I verify that this user has no access privileges$/) do
+	$poAcesso.verifyAvailableOptionsForUserWithoutProfile
+end
+
+And(/^I verify that the user can not do anything until it is included in a discipline by the coordinator$/) do
+	$poAcesso.verifyRestrictedPermission
+end
+
+Then(/^I verify students profile have ready only access$/) do
+	$poAcesso.verifyRestrictedPermission
+end
+
+Then(/^I verify if profile have permission for create classes$/) do
+	$poAcesso.verifyIfProfileCanCreateClasses
+end
+
+And(/^I verify if profile have permission for create questions$/) do
+	$poAcesso.verifyIfProfileCanCreateQuestions
+end
+
+And(/^I verify if profile have permission for create exams$/) do
+	$poAcesso.verifyIfProfileCanCreateExams
+end
+
+And(/^I verify if profile have permission for update disciplines$/) do
+	$poAcesso.verifyIfProfileCanUpdateDisciplines
+end
+
+And(/^I verify if profile have permission for create and update topics$/) do
+	$poAcesso.verifyIfProfileCanUpdateTopics
+end
+
+And(/^I verify if profile have permission for create and update institutes$/) do
+	$poAcesso.verifyIfProfileCanUpdateAndCreateInstitutes
+end
+
+And(/^I verify if profile have permission for create and update courses$/) do
+	$poAcesso.verifyIfProfileCanUpdateAndCreateCourses
+end
+
+And(/^I verify if profile have permission for access admin menu$/) do
+	$poAcesso.verifyIfProfileCanAccessAdminMenu
+end
+
+
 

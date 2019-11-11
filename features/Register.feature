@@ -12,6 +12,18 @@ Scenario: Testing the new user's register
 		And I click on signup button
 	Then I verify if the user was correctly created
 
+@Register_With_Incorrec_Domain
+Scenario: Testing the message error when the email doesn't contain ufabc domain
+	Given the test configuration data has been intialized 
+	When I access the webMCTest
+		And I click on "Inscrever" option
+	Then I should see the "Inscrever" page
+	Then I fill the email field with a user that not contains ufabc domain
+		And I fill the first and last name
+		And I fill the password and his confirmation "following" requirements with "same" keys
+		And I click on signup button
+	Then I see a message error that requires a email with ufabc domain
+
 @Register_With_Too_Short_Password
 Scenario: Testing the password requirements 
 	Given the test configuration data has been intialized 

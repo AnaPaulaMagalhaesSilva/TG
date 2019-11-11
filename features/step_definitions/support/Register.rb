@@ -110,4 +110,16 @@ class Register
 		email.send_keys $poAuxiliar.generateTooLongMail 			
 	end
 
+	def fillUserNotUfabcDomain
+		email = find('input#id_email')
+		email.send_keys 'ana@gmail.com'
+	end
+
+	def verifyUserNotUfabcDomain
+		begin
+			find('div#info', text: 'Make sure email is intitutional:')
+		rescue Exception => e
+			raise "Could not finde correct message error! " + e.to_s
+		end
+	end
 end
