@@ -25,8 +25,25 @@ class Login
 		end	
 	end
 
-	def loginCoordUser
-		userData = $poAuxiliar.readCredentials('coordenador')
+	def clickLogout
+		within('#navbarSupportedContent') do
+			find('.nav-link', text: 'Sair').click
+		end
+	end
+
+	def loginUser(option)
+		case option
+		when 'coordenador'
+			userData = $poAuxiliar.readCredentials('coordenador')
+		when 'professor'
+			userData = $poAuxiliar.readCredentials('professor')
+		when 'estudante'
+			userData = $poAuxiliar.readCredentials('estudante')
+		when 'administrador'
+			userData = $poAuxiliar.readCredentials('administrador')
+		when 'usuário sem privilégios'
+			userData = $poAuxiliar.readCredentials('usuário sem privilégios')
+		end
 		within('div.card-body') do 
 			@user = userData['login']
 			password = userData['password']
@@ -39,6 +56,17 @@ class Login
 		user = @user.split('@')[0]
 		within('#navbarSupportedContent') do
 			raise unless find('a.nav-link', text: user)	
+		end
+	end
+
+	def checkIfIamUnloged
+		user = @user.split('@')[0]
+		begin
+			within('#navbarSupportedContent') do
+				raise "You are logged!"	if find('a.nav-link', text: user)	
+			end
+		rescue
+			puts "You are unloged!"
 		end
 	end
 end

@@ -12,6 +12,8 @@ class Auxiliar
 			data_hash['estudante']
 		when 'administrador'
 			data_hash['administrador']
+		when 'usuário sem privilégios'
+			data_hash['usuário sem privilégios']
 		end
 	end
 
